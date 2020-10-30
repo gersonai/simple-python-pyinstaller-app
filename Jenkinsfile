@@ -33,7 +33,7 @@ pipeline {
 	stage('Deliver') {
             agent any
             steps {
-                sh "docker run --rm -w /src -v '${(pwd)}sources:/src' 'cdrx/pyinstaller-linux:python3' 'pyinstaller -F add2vals.py'"
+                sh "docker run --rm -w /src -v '/Users/gerson/myDockers/jenkins/simple-python-pyinstaller-app/sources:/src' 'cdrx/pyinstaller-linux:python3' 'pyinstaller -F add2vals.py'"
             }
             post {
                 success {
