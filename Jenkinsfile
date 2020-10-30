@@ -33,7 +33,7 @@ pipeline {
 	stage('Deliver') {
             agent any
             environment {
-                VOLUME = '/var/jenkins_home/workspace/Python-pyinstaller-app-pipeline/sources:/src'
+                VOLUME = '/Users/gerson/myDockers/jenkins/simple-python-pyinstaller-app/sources:/src'
                 IMAGE = 'cdrx/pyinstaller-linux:python3'
             }
             steps {
