@@ -37,7 +37,7 @@ pipeline {
                 IMAGE = 'cdrx/pyinstaller-linux:python3'
             }
             steps {
-                sh "docker run --rm -w /src -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+                sh "docker run --rm -w /src -v '$(pwd)/sources:/src' 'cdrx/pyinstaller-linux:python3' 'pyinstaller -F add2vals.py'"
             }
             post {
                 success {
