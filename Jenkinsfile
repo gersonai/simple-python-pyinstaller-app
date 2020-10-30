@@ -41,7 +41,7 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts "${JENKINS_HOME}/jobs/Python-pyinstaller-app-pipeline/builds/${env.BUILD_ID}/sources/dist/add2vals"
+                    archiveArtifacts "/Users/gerson/myDockers/jenkins/simple-python-pyinstaller-app/sources/dist/add2vals"
                     sh "docker run --rm -v -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 }
             }
