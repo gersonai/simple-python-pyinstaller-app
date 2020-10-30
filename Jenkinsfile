@@ -37,7 +37,7 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts "/src/dist/add2vals"
+                    archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
                     sh "docker run --rm -v '/Users/gerson/myDockers/jenkins/simple-python-pyinstaller-app/sources:/src' 'cdrx/pyinstaller-linux:python3' 'rm -rf build dist'"
                 }
             }
