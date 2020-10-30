@@ -1,17 +1,21 @@
 pipeline {
     agent none
+    options {
+        skipStagesAfterUnstable()
+    }
     stages {
-        stage('Build') {
+        stage('Build') { 
             agent {
                 docker {
-                    image 'python:2-alpine'
+                    image 'python:3-alpine' 
                 }
             }
             steps {
-                sh 'python -m py_compile sources/add2vals.py sources/calc.py'
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py' 
+                stash(name: 'compiled-results', includes: 'sources/*.py*') 
             }
         }
-        stage('Test') {
+	stage('Test') {
             agent {
                 docker {
                     image 'qnib/pytest'
@@ -26,18 +30,19 @@ pipeline {
                 }
             }
         }
-        stage('Deliver') {
-            agent {
-                docker {
-                    image 'cdrx/pyinstaller-linux:python2'
-                }
+	stage('Deliver') {
+            agent any
+            environment {
+                VOLUME = '$(pwd)/sources:/src'
+                IMAGE = 'cdrx/pyinstaller-linux:python3'
             }
             steps {
-                sh 'pyinstaller -F sources/add2vals.py'
+                sh -c "docker run --rm -w /src -v '$(pwd)/sources:/src' cdrx/pyinstaller-linux:python3" && sh -c "pyinstaller -F add2vals.py"
             }
             post {
                 success {
-                    archiveArtifacts 'dist/add2vals'
+                    archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
+                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 }
             }
         }
