@@ -33,12 +33,12 @@ pipeline {
 	stage('Deliver') {
             agent any
             steps {
-                sh "docker run --rm -w /src -v '/Users/gerson/myDockers/jenkins/simple-python-pyinstaller-app/sources:/src' 'cdrx/pyinstaller-linux:python3' 'pyinstaller -F add2vals.py'"
+                sh "docker run --rm -w /src -v '/var/jenkins_home/workspace/Python-pyinstaller-app-pipeline/sources:/src' 'cdrx/pyinstaller-linux:python3' 'pyinstaller -F add2vals.py'"
             }
             post {
                 success {
                     archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
-                    sh "docker run --rm -v '${(pwd)}:/src' 'cdrx/pyinstaller-linux:python3' 'rm -rf build dist'"
+                    sh "docker run --rm -v '/var/jenkins_home/workspace/Python-pyinstaller-app-pipeline/sources:/src' 'cdrx/pyinstaller-linux:python3' 'rm -rf build dist'"
                 }
             }
         }
