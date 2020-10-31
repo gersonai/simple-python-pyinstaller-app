@@ -39,12 +39,6 @@ pipeline {
             steps {
                 sh "docker run --rm -w /src -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
             }
-            post {
-                success {
-                    archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
-                    sh "docker run --rm -v -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
-                }
-            }
         }
     }
 }
